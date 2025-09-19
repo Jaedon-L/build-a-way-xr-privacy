@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build a Way XR - Mixed Reality Bridge Builder</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #222;
+        }
+
+        header {
+            background: linear-gradient(90deg, #4a90e2, #50e3c2);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3em;
+        }
+
+        header p {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        .cta-button {
+            margin-top: 20px;
+            background-color: #ff7f50;
+            color: white;
+            padding: 12px 24px;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .media-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .media-gallery img, .media-gallery video {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .description h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #4a90e2;
+        }
+
+        .description p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .feature-card h3 {
+            margin-top: 0;
+            color: #50e3c2;
+        }
+
+        footer {
+            background-color: #222;
+            color: #eee;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        footer a {
+            color: #50e3c2;
+            text-decoration: none;
+        }
+
+        @media(max-width: 768px){
+            header h1 {
+                font-size: 2.2em;
+            }
+
+            .media-gallery img, .media-gallery video {
+                width: 90%;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Build a Way XR</h1>
+        <p>Design, Build, and Drive Your Bridges in Mixed Reality</p>
+        <a href="#" class="cta-button">Play Now</a>
+    </header>
+
+    <div class="container">
+        <!-- Media Section -->
+        <section class="section media-gallery">
+            <video src="trailer.mp4" controls></video>
+            <img src="screenshot1.jpg" alt="Bridge building in mixed reality">
+            <img src="screenshot2.jpg" alt="Driving across a bridge">
+            <img src="screenshot3.jpg" alt="Hand-tracked building interface">
+            <img src="screenshot4.jpg" alt="Bridge collapse physics">
+        </section>
+
+        <!-- Description -->
+        <section class="section description">
+            <h2>About the Game</h2>
+            <p>Build a Way XR is a physics-based puzzle game that transforms your room into a bridge-building playground. Design structures, test their strength, and take the wheel to see if your creations can carry you to the goal.</p>
+            <p>Your mission: get your car safely across. Build with platforms and supports, reinforce your design, then shift into drive and test it yourself. Every level brings tougher gaps, trickier terrain, and more interactions and obstacles for you to navigate.</p>
+            <p>Will your bridge stand strong, or will it collapse under pressure? Build, drive, and experience mixed reality like never before.</p>
+        </section>
+
+        <!-- Features -->
+        <section class="section features">
+            <div class="feature-card">
+                <h3>✨ Mixed Reality Construction</h3>
+                <p>Watch your bridges rise up in your space and interact with them from every angle.</p>
+            </div>
+            <div class="feature-card">
+                <h3>✋ Hand Tracking Gameplay</h3>
+                <p>Build, edit, and drive with nothing but your hands—no controllers needed.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🔄 Build → Edit → Drive</h3>
+                <p>Seamlessly switch between designing, refining, and test-driving your creations.</p>
+            </div>
+            <div class="feature-card">
+                <h3>⚙️ Physics Challenges</h3>
+                <p>Master the balance between stability and creativity as levels increase in difficulty.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🆕 Expanding Content</h3>
+                <p>Launches with 12 handcrafted levels and more on the way, shaped by player feedback.</p>
+            </div>
+        </section>
+
+        <!-- Keywords / Tags -->
+        <section class="section">
+            <h2>Keywords</h2>
+            <p>bridgebuilder, mixedreality, physics, handtracking, driving, puzzle, MR, interactive, construction</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>Developer: Jaedon Lee | <a href="https://yourportfolio.com">Portfolio</a></p>
+        <p><a href="privacy-policy.html">Privacy Policy</a></p>
+    </footer>
+</body>
+</html>
