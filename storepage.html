@@ -120,22 +120,19 @@
   box-shadow: 0 8px 28px rgba(10,20,30,0.12);
 }
 
-/* Video container */
 .slide .video-wrap {
   width: 100%;
-  max-height: 100%;      /* respect slide's max height */
+  max-height: 420px;      /* overall max height */
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 8px 28px rgba(10,20,30,0.12);
   background: #000;
 
-  /* aspect ratio box for responsive iframe */
   position: relative;
-  padding-bottom: 56.25%; /* 16:9 ratio */
+  padding-bottom: 62%;   /* slightly more than 56.25% to allow controls */
   height: 0;
 }
 
-/* Video iframe */
 .video-wrap iframe {
   position: absolute;
   top: 0;
