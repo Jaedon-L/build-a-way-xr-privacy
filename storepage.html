@@ -1,190 +1,428 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Build a Way XR - Mixed Reality Bridge Builder</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-            color: #222;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Build a Way XR — Mixed Reality Bridge Builder</title>
 
-        header {
-            background: linear-gradient(90deg, #4a90e2, #50e3c2);
-            color: white;
-            padding: 60px 20px;
-            text-align: center;
-        }
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-        header h1 {
-            margin: 0;
-            font-size: 3em;
-        }
+  <style>
+    :root{
+      --accent1:#4a90e2;
+      --accent2:#50e3c2;
+      --muted:#65707a;
+      --bg:#f6f8fb;
+      --card:#ffffff;
+      --glass: rgba(255,255,255,0.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial;
+      margin:0;
+      background:var(--bg);
+      color:#111;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
 
-        header p {
-            font-size: 1.2em;
-            margin-top: 10px;
-        }
+    /* Header / Hero */
+    header{
+      min-height:320px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:white;
+      position:relative;
+      background-image: url('assets/building1.png');
+      background-size:cover;
+      background-position:center;
+    }
+    header::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(10,20,40,0.55) 0%, rgba(10,20,40,0.45) 40%, rgba(10,20,40,0.55) 100%);
+      pointer-events:none;
+    }
+    .hero-inner{
+      position:relative;
+      z-index:2;
+      max-width:1100px;
+      padding:48px 20px;
+    }
+    .title {
+      font-size:2.6rem;
+      margin:0 0 12px;
+      font-weight:700;
+      letter-spacing:-0.5px;
+    }
+    .tagline{
+      margin:0 0 18px;
+      color: #e6f7ff;
+      font-weight: 500;
+      font-size:1.05rem;
+    }
+    .cta {
+      display:inline-block;
+      background:var(--accent2);
+      color:#012;
+      padding:12px 20px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:600;
+      box-shadow: 0 8px 20px rgba(80,227,194,0.12);
+    }
 
-        .cta-button {
-            margin-top: 20px;
-            background-color: #ff7f50;
-            color: white;
-            padding: 12px 24px;
-            font-size: 1em;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            text-decoration: none;
-        }
+    /* Layout container */
+    .container{
+      max-width:1100px;
+      margin:32px auto;
+      padding:0 20px;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
+    /* Carousel */
+    .carousel {
+      background:transparent;
+      border-radius:12px;
+      overflow:hidden;
+      position:relative;
+      box-shadow:0 10px 30px rgba(20,20,30,0.06);
+      margin-bottom:28px;
+    }
+    .carousel-track{
+      display:flex;
+      transition: transform 420ms cubic-bezier(.2,.9,.2,1);
+      will-change: transform;
+    }
+    .slide {
+      min-width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+    }
+    .slide img{
+      width:100%;
+      height:420px;
+      object-fit:cover;
+      border-radius:8px;
+      box-shadow:0 8px 28px rgba(10,20,30,0.12);
+    }
+    .slide .video-wrap{
+      width:100%;
+      height:420px;
+      border-radius:8px;
+      overflow:hidden;
+      box-shadow:0 8px 28px rgba(10,20,30,0.12);
+      background:#000;
+    }
+    .video-wrap iframe{
+      width:100%;
+      height:100%;
+      border:0;
+    }
+    /* carousel controls */
+    .carousel-controls{
+      position:absolute;
+      top:50%;
+      left:0;
+      right:0;
+      transform:translateY(-50%);
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:0 12px;
+      pointer-events:none;
+    }
+    .ctrl {
+      pointer-events:auto;
+      background:rgba(6,8,12,0.56);
+      border:0;
+      color:white;
+      width:44px;
+      height:44px;
+      border-radius:8px;
+      display:inline-grid;
+      place-items:center;
+      cursor:pointer;
+      box-shadow:0 6px 16px rgba(2,6,12,0.35);
+    }
+    .ctrl:active{ transform: scale(.98) }
+    .carousel-dots{
+      display:flex;
+      gap:8px;
+      position:absolute;
+      bottom:12px;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:5;
+    }
+    .dot {
+      width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,0.5);cursor:pointer;
+      transition:transform .18s, background .2s;
+    }
+    .dot.active{ background:var(--accent2); transform:scale(1.25); }
 
-        .section {
-            margin-bottom: 60px;
-        }
+    /* Description and features */
+    .grid {
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:28px;
+      align-items:start;
+    }
+    @media(max-width:980px){ .grid{ grid-template-columns:1fr; } }
 
-        .media-gallery {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
+    .card{
+      background:var(--card);
+      padding:20px;
+      border-radius:12px;
+      box-shadow:0 8px 30px rgba(20,30,40,0.04);
+    }
+    .card h2{ color:var(--accent1); margin-top:0; }
+    .card p{ color:var(--muted); line-height:1.6; }
 
-        .media-gallery img, .media-gallery video {
-            width: 300px;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
+    /* feature cards area */
+    .features {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:14px;
+      margin-top:18px;
+    }
+    .feature{
+      background:var(--card);
+      border-radius:12px;
+      padding:18px;
+      text-align:center; /* centered text */
+      box-shadow:0 6px 18px rgba(20,20,30,0.05);
+    }
+    .feature h3{
+      margin:4px 0 8px; color:var(--accent2); font-size:1.05rem;
+    }
+    .feature p{ margin:0; color:var(--muted); font-size:0.95rem; }
 
-        .description h2 {
-            font-size: 2em;
-            margin-bottom: 15px;
-            color: #4a90e2;
-        }
+    /* tags */
+    .tags{ margin-top:14px; display:flex; flex-wrap:wrap; gap:8px; }
+    .tag{
+      background:linear-gradient(180deg,var(--accent2),#38c8a8);
+      color:#022;
+      padding:7px 12px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:0.9rem;
+      box-shadow:0 6px 18px rgba(80,227,194,0.08);
+    }
 
-        .description p {
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
+    /* footer */
+    footer{
+      margin-top:40px;
+      padding:28px 20px;
+      text-align:center;
+      color:#6b7280;
+      font-size:0.95rem;
+    }
+    footer a{ color:var(--accent2); text-decoration:none; font-weight:600; }
 
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        .feature-card h3 {
-            margin-top: 0;
-            color: #50e3c2;
-        }
-
-        footer {
-            background-color: #222;
-            color: #eee;
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        footer a {
-            color: #50e3c2;
-            text-decoration: none;
-        }
-
-        @media(max-width: 768px){
-            header h1 {
-                font-size: 2.2em;
-            }
-
-            .media-gallery img, .media-gallery video {
-                width: 90%;
-                height: auto;
-            }
-        }
-    </style>
+    /* responsive tweaks for images */
+    @media(max-width:680px){
+      .slide img, .video-wrap{ height:260px; }
+      .title{ font-size:1.6rem; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Build a Way XR</h1>
-        <p>Design, Build, and Drive Your Bridges in Mixed Reality</p>
-        <a href="#" class="cta-button">Play Now</a>
-    </header>
 
-    <div class="container">
-        <!-- Media Section -->
-        <section class="section media-gallery">
-            <video src="https://youtu.be/wWM7GJYPsLY" controls></video>
-          <img src="assets/1tutorial.png" alt="Tutorial Screen">
-          <img src="assets/2handUI.png" alt="Hand UI">
-          <img src="assets/building.png" alt="Bridge Building">
-          <img src="assets/building1.png" alt="Bridge Construction">
-          <img src="assets/complexbuild.png" alt="Complex Bridge">
-          <img src="assets/dragging.png" alt="Dragging Nodes">
-          <img src="assets/driving.png" alt="Driving Car">
-          <img src="assets/falling.png" alt="Bridge Collapse">
-          <img src="assets/model.png" alt="3D Model">
-          <img src="assets/win.png" alt="Level Complete">
-        </section>
+  <!-- HERO -->
+  <header>
+    <div class="hero-inner">
+      <h1 class="title">Build a Way XR</h1>
+      <p class="tagline">Design, build, and drive your bridges — right in your room.</p>
+      <a class="cta" href="https://jaedon-l.github.io/3d_portfolio/">View portfolio</a>
+    </div>
+  </header>
 
-        <!-- Description -->
-        <section class="section description">
-            <h2>About the Game</h2>
-            <p>Build a Way XR is a physics-based puzzle game that transforms your room into a bridge-building playground. Design structures, test their strength, and take the wheel to see if your creations can carry you to the goal.</p>
-            <p>Your mission: get your car safely across. Build with platforms and supports, reinforce your design, then shift into drive and test it yourself. Every level brings tougher gaps, trickier terrain, and more interactions and obstacles for you to navigate.</p>
-            <p>Will your bridge stand strong, or will it collapse under pressure? Build, drive, and experience mixed reality like never before.</p>
-        </section>
+  <main class="container">
 
-        <!-- Features -->
-        <section class="section features">
-            <div class="feature-card">
-                <h3>✨ Mixed Reality Construction</h3>
-                <p>Watch your bridges rise up in your space and interact with them from every angle.</p>
-            </div>
-            <div class="feature-card">
-                <h3>✋ Hand Tracking Gameplay</h3>
-                <p>Build, edit, and drive with nothing but your hands—no controllers needed.</p>
-            </div>
-            <div class="feature-card">
-                <h3>🔄 Build → Edit → Drive</h3>
-                <p>Seamlessly switch between designing, refining, and test-driving your creations.</p>
-            </div>
-            <div class="feature-card">
-                <h3>⚙️ Physics Challenges</h3>
-                <p>Master the balance between stability and creativity as levels increase in difficulty.</p>
-            </div>
-            <div class="feature-card">
-                <h3>🆕 Expanding Content</h3>
-                <p>Launches with 12 handcrafted levels and more on the way, shaped by player feedback.</p>
-            </div>
-        </section>
+    <!-- MEDIA CAROUSEL -->
+    <div class="carousel card" aria-label="Media carousel">
+      <div class="carousel-track" id="track">
+        <!-- Slide 0: Video -->
+        <div class="slide">
+          <div class="video-wrap">
+            <div class="video-wrap">
+  <iframe
+    src="https://www.youtube.com/embed/wWM7GJYPsLY?si=oYUG4kcrzZPA_exX"
+    title="Build a Way XR Trailer"
+    loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen
+    style="width:100%; height:100%; border:0;">
+  </iframe>
+</div>
+          </div>
+        </div>
 
-        <!-- Keywords / Tags -->
-        <section class="section">
-            <h2>Keywords</h2>
-            <p>bridgebuilder, mixedreality, physics, handtracking, driving, puzzle, MR, interactive, construction</p>
-        </section>
+        <!-- Image slides -->
+        <div class="slide"><img src="assets/1tutorial.png" alt="Build a Way XR - tutorial"/></div>
+        <div class="slide"><img src="assets/2handUI.png" alt="Hand UI menu and build modes"/></div>
+        <div class="slide"><img src="assets/building.png" alt="Building a bridge in mixed reality"/></div>
+        <div class="slide"><img src="assets/building1.png" alt="Bridge construction close up"/></div>
+        <div class="slide"><img src="assets/complexbuild.png" alt="Complex multi-support bridge"/></div>
+        <div class="slide"><img src="assets/dragging.png" alt="Dragging nodes into place"/></div>
+        <div class="slide"><img src="assets/driving.png" alt="Driving test car across bridge"/></div>
+        <div class="slide"><img src="assets/falling.png" alt="Bridge collapse and physics"/></div>
+        <div class="slide"><img src="assets/model.png" alt="3D model art"/></div>
+        <div class="slide"><img src="assets/win.png" alt="Level complete - car reached goal"/></div>
+      </div>
+
+      <div class="carousel-controls" aria-hidden="false">
+        <button class="ctrl" id="prev" aria-label="Previous slide">&larr;</button>
+        <button class="ctrl" id="next" aria-label="Next slide">&rarr;</button>
+      </div>
+
+      <div class="carousel-dots" id="dots" aria-hidden="false"></div>
+    </div>
+
+    <!-- DESCRIPTION + SIDE -->
+    <div class="grid">
+      <div class="card">
+        <h2>About the Game</h2>
+        <p><strong>Build a Way XR</strong> is a physics-based puzzle game that transforms your room into a bridge-building playground. Design structures, test their strength, and take the wheel to see if your creations can carry you to the goal.</p>
+
+        <p><strong>Your mission:</strong> get your car safely across. Place platforms and supports, reinforce your design, then shift into drive and test it yourself. Each level raises the challenge with wider gaps, interactive obstacles, and trickier terrain that put your engineering skills to the test.</p>
+
+        <div style="margin-top:14px; font-weight:600; color:var(--muted)">Keywords</div>
+        <div class="tags" aria-hidden="false">
+          <div class="tag">mixedreality</div>
+          <div class="tag">handtracking</div>
+          <div class="tag">bridgebuilder</div>
+          <div class="tag">physicspuzzle</div>
+          <div class="tag">drivinggame</div>
+        </div>
+      </div>
+
+      <!-- Features column -->
+      <aside class="card">
+        <h2 style="margin-top:0;">Key Features</h2>
+
+        <div class="features">
+          <div class="feature">
+            <h3>Mixed Reality Construction</h3>
+            <p>Watch your bridges rise in your space and interact with them from every angle.</p>
+          </div>
+
+          <div class="feature">
+            <h3>Hand Tracking Gameplay</h3>
+            <p>Build, edit, and drive using natural hand gestures—no controllers required.</p>
+          </div>
+
+          <div class="feature">
+            <h3>Build → Edit → Drive</h3>
+            <p>Quickly switch between construction, refinement, and testing modes.</p>
+          </div>
+
+          <div class="feature">
+            <h3>Physics Challenges</h3>
+            <p>Every beam matters—find the balance between creativity and stability.</p>
+          </div>
+
+          <div class="feature">
+            <h3>Expanding Content</h3>
+            <p>12 handcrafted levels at launch with more content planned from player feedback.</p>
+          </div>
+        </div>
+      </aside>
     </div>
 
     <footer>
-        <p>Developer: Jaedon Lee | <a href="https://jaedon-l.github.io/3d_portfolio/">Portfolio</a></p>
-        <p><a href="privacy-policy.html">Privacy Policy</a></p>
+      <p>Developer: Jaedon Lee | <a href="https://jaedon-l.github.io/3d_portfolio/" target="_blank" rel="noopener">Portfolio</a> • <a href="https://jaedon-l.github.io/build-a-way-xr-privacy/" target="_blank" rel="noopener">Privacy Policy</a></p>
     </footer>
+  </main>
+
+  <script>
+    // Simple carousel logic
+    (function(){
+      const track = document.getElementById('track');
+      const slides = Array.from(track.children);
+      const prev = document.getElementById('prev');
+      const next = document.getElementById('next');
+      const dotsWrap = document.getElementById('dots');
+      let index = 0;
+      const total = slides.length;
+
+      // build dots
+      slides.forEach((_,i)=>{
+        const d = document.createElement('button');
+        d.className = 'dot' + (i===0 ? ' active' : '');
+        d.setAttribute('aria-label','Go to slide ' + (i+1));
+        d.addEventListener('click', ()=> goTo(i));
+        dotsWrap.appendChild(d);
+      });
+
+      const dots = Array.from(dotsWrap.children);
+
+      function update(){
+        const w = track.clientWidth;
+        track.style.transform = `translateX(-${index * w}px)`;
+        dots.forEach((d, i)=> d.classList.toggle('active', i===index));
+      }
+
+      function goTo(i){
+        index = (i + total) % total;
+        update();
+      }
+
+      // prev/next
+      prev.addEventListener('click', ()=> {
+        index = (index - 1 + total) % total;
+        update();
+      });
+      next.addEventListener('click', ()=> {
+        index = (index + 1) % total;
+        update();
+      });
+
+      // responsive: update on resize (keeps transform correct)
+      let resizeTimeout;
+      window.addEventListener('resize', ()=>{
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(update, 120);
+      });
+
+      // basic autoplay (optional)
+      let autoplay = true;
+      let autoplayDelay = 4500;
+      let autoplayTimer;
+      function startAutoplay(){
+        if(!autoplay) return;
+        autoplayTimer = setInterval(()=>{
+          index = (index + 1) % total;
+          update();
+        }, autoplayDelay);
+      }
+      function stopAutoplay(){
+        clearInterval(autoplayTimer);
+      }
+      // pause on hover/focus
+      document.querySelector('.carousel').addEventListener('mouseenter', stopAutoplay);
+      document.querySelector('.carousel').addEventListener('mouseleave', startAutoplay);
+      // init
+      update();
+      startAutoplay();
+
+      // Make track children width responsive to container
+      function sizeSlides(){
+        const slideWidth = document.querySelector('.carousel').clientWidth;
+        slides.forEach(slide => slide.style.minWidth = slideWidth + 'px');
+        update();
+      }
+      sizeSlides();
+      window.addEventListener('resize', sizeSlides);
+    })();
+  </script>
 </body>
 </html>
